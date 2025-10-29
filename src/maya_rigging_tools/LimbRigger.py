@@ -102,15 +102,25 @@ class LimbRigger:
         ikPoleVectorCoords = mc.getAttr(f"{ikHandle}.poleVector")[0]
         print(ikPoleVectorCoords)
         ikPoleVector = MVector(ikPoleVectorCoords[0], ikPoleVectorCoords[1], ikPoleVectorCoords[2])
+        ikPoleVector.normalize()
 
         # Arm dir & length
         armVector: MVector = endPos - rootPos
 
         armLength: float = armVector.length()
-        armDir: MVector = armVector.normalize()
+        armVector.normalize()
 
         # Pole Vector position 
-        poleVectorPos = rootPos + (ikPoleVector + armDir) * armLength
+        poleVectorPos = rootPos + (ikPoleVector + armVector) * armLength / 2
+
+        poleVectorCtrl = "ac_ik_" + self.mid 
+        mc.spaceLocator(n=poleVectorCtrl)
+
+        poleVectorCtrlGrp = poleVectorCtrl + "_grp"
+        mc.group(poleVectorCtrl, n=poleVectorCtrlGrp)
+
+        mc.setAttr(f"{poleVectorCtrlGrp}.translate", poleVectorPos[0], poleVectorPos[1], poleVectorPos[2], typ="double3")
+        mc.poleVectorConstraint(poleVectorCtrl, ikHandle)
 
 
 
