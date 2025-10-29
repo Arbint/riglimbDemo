@@ -146,6 +146,10 @@ class LimbRigger:
         mc.parent(ikHandle, ikEndCtrl)
         mc.setAttr(f"{ikHandle}.v", 0)
 
+        topGrpName = self.root + "_rig_grp"
+        mc.group(rootCtrlGrp, ikEndCtrlGrp, poleVectorCtrlGrp, ikfkBlendCtrlGrp, n=topGrpName)
+
+
 
     def CreatePlusShapedController(self, name):
         mel.eval(f"curve -n {name} -d 1 -p -3 1 0 -p -1 1 0 -p -1 3 0 -p 1 3 0 -p 1 1 0 -p 3 1 0 -p 3 -1 0 -p 1 -1 0 -p 1 -3 0 -p -1 -3 0 -p -1 -1 0 -p -3 -1 0 -p -3 1 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 ;")
