@@ -102,7 +102,16 @@ class LimbRigger:
         ikPoleVectorCoords = mc.getAttr(f"{ikHandle}.poleVector")[0]
         print(ikPoleVectorCoords)
         ikPoleVector = MVector(ikPoleVectorCoords[0], ikPoleVectorCoords[1], ikPoleVectorCoords[2])
-        
+
+        # Arm dir & length
+        armVector: MVector = endPos - rootPos
+
+        armLength: float = armVector.length()
+        armDir: MVector = armVector.normalize()
+
+        # Pole Vector position 
+        poleVectorPos = rootPos + (ikPoleVector + armDir) * armLength
+
 
 
     def GetObjectPosition(self, objectName)->MVector:
