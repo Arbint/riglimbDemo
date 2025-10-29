@@ -129,6 +129,18 @@ class LimbRigger:
         ikfkBlendPos = rootPos + MVector(rootPos[0], 0, 0)
         mc.setAttr(f"{ikfkBlendCtrlGrp}.translate", ikfkBlendPos[0], ikfkBlendPos[1], ikfkBlendPos[2], typ="double3")
 
+        ikfkBlendAttrName = "ikfkBlend"
+        mc.addAttr(ikfkBlendCtrl, ln=ikfkBlendAttrName, min = 0, max=1, k=True)
+
+        orientConstraint = mc.orientConstraint(ikEndCtrl, self.end)[0]
+
+        ikfkBlendAttrPath = f"{ikfkBlendCtrl}.{ikfkBlendAttrName}"
+
+        mc.expression(s=f"{ikHandle}.ikBlend={ikfkBlendAttrPath}")
+        mc.expression(s=f"{ikEndCtrlGrp}.v={ikfkBlendAttrPath}")
+        mc.expression(s=f"{poleVectorCtrlGrp}.v={ikfkBlendAttrPath}")
+        mc.expression(s=f"{rootCtrlGrp}.v=1-{ikfkBlendAttrPath}")
+
 
     def CreatePlusShapedController(self, name):
         mel.eval(f"curve -n {name} -d 1 -p -3 1 0 -p -1 1 0 -p -1 3 0 -p 1 3 0 -p 1 1 0 -p 3 1 0 -p 3 -1 0 -p 1 -1 0 -p 1 -3 0 -p -1 -3 0 -p -1 -1 0 -p -3 -1 0 -p -3 1 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 ;")
