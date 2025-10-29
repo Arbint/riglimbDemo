@@ -122,6 +122,19 @@ class LimbRigger:
         mc.setAttr(f"{poleVectorCtrlGrp}.translate", poleVectorPos[0], poleVectorPos[1], poleVectorPos[2], typ="double3")
         mc.poleVectorConstraint(poleVectorCtrl, ikHandle)
 
+        # sideLabel = "_l_" if rootPos[0] > 0 else "_r_"
+        ikfkBlendCtrl = "ac_ikfk_blend_" + self.root
+        ikfkBlendCtrl, ikfkBlendCtrlGrp = self.CreatePlusShapedController(ikfkBlendCtrl) 
+
+        ikfkBlendPos = rootPos + MVector(rootPos[0], 0, 0)
+        mc.setAttr(f"{ikfkBlendCtrlGrp}.translate", ikfkBlendPos[0], ikfkBlendPos[1], ikfkBlendPos[2], typ="double3")
+
+
+    def CreatePlusShapedController(self, name):
+        mel.eval(f"curve -n {name} -d 1 -p -3 1 0 -p -1 1 0 -p -1 3 0 -p 1 3 0 -p 1 1 0 -p 3 1 0 -p 3 -1 0 -p 1 -1 0 -p 1 -3 0 -p -1 -3 0 -p -1 -1 0 -p -3 -1 0 -p -3 1 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 ;")
+        grpName = name + "_grp"
+        mc.group(name, n=grpName)
+        return name, grpName
 
 
     def GetObjectPosition(self, objectName)->MVector:
