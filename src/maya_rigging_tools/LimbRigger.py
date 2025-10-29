@@ -1,6 +1,8 @@
 import maya.cmds as mc
 import maya.OpenMayaUI as omui
 import maya.mel as mel
+from maya.OpenMaya import MVector
+
 from PySide6.QtWidgets import (QMainWindow, 
                                QWidget,
                                QVBoxLayout,
@@ -88,6 +90,27 @@ class LimbRigger:
         ikEndCtrl, ikEndCtrlGrp = self.CreateBoxController("ac_ik_"+self.end)
         mc.matchTransform(ikEndCtrlGrp, self.end)
 
+        rootPos: MVector = self.GetObjectPosition(self.root)
+        endPos: MVector = self.GetObjectPosition(self.end)
+
+        # figure out a ik Handle name
+        ikHandle = "ikHandle_" + self.end
+        # creates the ik handle, sj means the starting joint of the ik, ee is the end joint of the ik
+        mc.ikHandle(n = ikHandle, sj = self.root, ee = self.end, sol = "ikRPsolver")
+
+        # mc.getAttr returns the values of the attribute, [0] means we are getting the first one.
+        ikPoleVectorCoords = mc.getAttr(f"{ikHandle}.poleVector")[0]
+        print(ikPoleVectorCoords)
+        ikPoleVector = MVector(ikPoleVectorCoords[0], ikPoleVectorCoords[1], ikPoleVectorCoords[2])
+        
+
+
+    def GetObjectPosition(self, objectName)->MVector:
+        # q means query, t means translate, ws means worldspace, it returns a list of 3 values for x, y, z
+        position = mc.xform(objectName, q=True, t=True, ws=True)
+
+        # construct a MVector using the x, y, z position from the position list
+        return MVector(position[0], position[1], position[2])
 
 
 
