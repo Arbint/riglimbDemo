@@ -140,6 +140,11 @@ class LimbRigger:
         mc.expression(s=f"{ikEndCtrlGrp}.v={ikfkBlendAttrPath}")
         mc.expression(s=f"{poleVectorCtrlGrp}.v={ikfkBlendAttrPath}")
         mc.expression(s=f"{rootCtrlGrp}.v=1-{ikfkBlendAttrPath}")
+        mc.expression(s=f"{orientConstraint}.{endCtrl}W0=1-{ikfkBlendAttrPath}")
+        mc.expression(s=f"{orientConstraint}.{ikEndCtrl}W1={ikfkBlendAttrPath}")
+
+        mc.parent(ikHandle, ikEndCtrl)
+        mc.setAttr(f"{ikHandle}.v", 0)
 
 
     def CreatePlusShapedController(self, name):
