@@ -1,0 +1,24 @@
+[project]
+name = "mayatools"
+version = "0.1.0"
+description = "a set of tools to help with maya content creation"
+authors = [
+    {name = "Jingtian Li"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "pyside6 (>=6.10.0,<7.0.0)"
+]
+
+[tool.poetry]
+packages = [
+    {include="maya", from="vendor/mayaSDK"},
+    {include="pymel", from="vendor/mayaSDK"},
+    {include="maya_rigging_tools", from="src"}
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
