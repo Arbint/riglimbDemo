@@ -16,7 +16,8 @@ dependencies = [
 packages = [
     {include="maya", from="vendor/mayaSDK"},
     {include="pymel", from="vendor/mayaSDK"},
-    {include="maya_rigging_tools", from="src"}
+    {include="maya_rigging_tools", from="src"},
+    {include="unreal", from="vendor"}
 ]
 
 [build-system]
