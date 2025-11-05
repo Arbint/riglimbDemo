@@ -10,7 +10,9 @@ from unreal import (AssetToolsHelpers,
                     MaterialEditingLibrary,
                     MaterialExpressionTextureSampleParameter2D as TextureSample2D,
                     MaterialProperty,
-                    MaterialFactoryNew
+                    MaterialFactoryNew,
+                    MaterialInstanceConstant,
+                    MaterialInstanceConstantFactoryNew
                     )
 from pathlib import Path
 print("hello from vscode!")
@@ -94,6 +96,18 @@ class UnrealUtilities:
             print(occRoughnessMetalic)
             baseMat = self.BuildBaseMaterial()
             print(f"made base material: {baseMat}")
+
+            materialName = StringLibrary.conv_name_to_string(materialElement.material_slot_name)
+            materialInstName = "MInst_" + materialName
+            materialInst: MaterialInstanceConstant = AssetToolsHelpers.get_asset_tools().create_asset(
+                asset_name=materialInstName,
+                package_path=materialDir + materialName,
+                asset_class=MaterialInstanceConstant,
+                factory=MaterialInstanceConstantFactoryNew()
+            )
+
+            materialInst.set_editor_property("parent", baseMat)
+
 
 
     def GetTexturesForMaterial(self, meshName: str, materialElement: StaticMaterial, textures: list[Texture2D]):
