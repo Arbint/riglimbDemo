@@ -12,7 +12,9 @@ from unreal import (AssetToolsHelpers,
                     MaterialProperty,
                     MaterialFactoryNew,
                     MaterialInstanceConstant,
-                    MaterialInstanceConstantFactoryNew
+                    MaterialInstanceConstantFactoryNew,
+                    TextureParameterValue,
+                    MaterialParameterInfo
                     )
 from pathlib import Path
 print("hello from vscode!")
@@ -107,6 +109,10 @@ class UnrealUtilities:
             )
 
             materialInst.set_editor_property("parent", baseMat)
+            baseColorTextureParam = TextureParameterValue(MaterialParameterInfo(self.baseColorName), baseColor)
+            normalTextureParam = TextureParameterValue(MaterialParameterInfo(self.normalName), normal)
+            occRoughnessMetallicParam = TextureParameterValue(MaterialParameterInfo(self.occRoughnessMetalicName), occRoughnessMetalic)
+            materialInst.set_editor_property("texture_parameter_values", [baseColorTextureParam, normalTextureParam, occRoughnessMetallicParam])
 
 
 
