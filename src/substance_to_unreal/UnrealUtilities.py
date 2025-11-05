@@ -5,7 +5,12 @@ from unreal import (AssetToolsHelpers,
                     Texture2D,
                     EditorAssetLibrary,
                     StaticMaterial,
-                    StringLibrary
+                    StringLibrary,
+                    Material,
+                    MaterialEditingLibrary,
+                    MaterialExpressionTextureSampleParameter2D as TextureSample2D,
+                    MaterialProperty,
+                    MaterialFactoryNew
                     )
 from pathlib import Path
 print("hello from vscode!")
@@ -18,6 +23,8 @@ class UnrealUtilities:
         self.baseColorName = "BaseColor"
         self.normalName = "Normal"
         self.occRoughnessMetalicName = "OcclusionRoughnessMetallic"
+
+        self.baseMaterialName = "M_SubstanceBase"
 
 
     def LoadMeshFromPath(self, meshPath):
@@ -84,6 +91,9 @@ class UnrealUtilities:
             print(baseColor)
             print(normal)
             print(occRoughnessMetalic)
+            baseMat = self.BuildBaseMaterial()
+            print(f"made base material: {baseMat}")
+
 
     def GetTexturesForMaterial(self, meshName: str, materialElement: StaticMaterial, textures: list[Texture2D]):
         materialElement: StaticMaterial = materialElement
@@ -112,6 +122,20 @@ class UnrealUtilities:
                 occRoughnessMetalic = texture
 
         return baseColor, normal, occRoughnessMetalic 
+
+    def BuildBaseMaterial(self):
+        # make a material with name self.baaseMaterialName, at self.substanceRootDir, then using the MaterialFactoryNew() as the maker (which creates a brand new material)
+        baseMat = AssetToolsHelpers.get_asset_tools().create_asset(
+            asset_name=self.baseMaterialName,
+            package_path=self.substanceRootDir,
+            asset_class=Material,
+            factory=MaterialFactoryNew()
+        )
+
+        EditorAssetLibrary.save_asset(baseMat.get_path_name())
+        return baseMat
+
+
 
 
 
