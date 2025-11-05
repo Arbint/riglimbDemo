@@ -26,6 +26,8 @@ class UnrealUtilities:
 
         self.baseMaterialName = "M_SubstanceBase"
 
+        self.baseMaterialPath = self.substanceRootDir + self.baseMaterialName
+
 
     def LoadMeshFromPath(self, meshPath):
         meshName = Path(meshPath).stem
@@ -124,6 +126,9 @@ class UnrealUtilities:
         return baseColor, normal, occRoughnessMetalic 
 
     def BuildBaseMaterial(self):
+        if EditorAssetLibrary.does_asset_exist(self.baseMaterialPath):
+            EditorAssetLibrary.delete_asset(self.baseMaterialPath)
+
         # make a material with name self.baaseMaterialName, at self.substanceRootDir, then using the MaterialFactoryNew() as the maker (which creates a brand new material)
         baseMat = AssetToolsHelpers.get_asset_tools().create_asset(
             asset_name=self.baseMaterialName,
