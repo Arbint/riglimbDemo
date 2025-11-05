@@ -114,6 +114,15 @@ class UnrealUtilities:
             occRoughnessMetallicParam = TextureParameterValue(MaterialParameterInfo(self.occRoughnessMetalicName), occRoughnessMetalic)
             materialInst.set_editor_property("texture_parameter_values", [baseColorTextureParam, normalTextureParam, occRoughnessMetallicParam])
 
+            mesh.set_material(i, materialInst)
+
+            EditorAssetLibrary.rename_asset(baseColor.get_path_name(), f"{materialDir}{materialName}/{baseColor.get_name()}")
+            EditorAssetLibrary.rename_asset(normal.get_path_name(), f"{materialDir}{materialName}/{normal.get_name()}")
+            EditorAssetLibrary.rename_asset(occRoughnessMetalic.get_path_name(), f"{materialDir}{materialName}/{occRoughnessMetalic.get_name()}")
+
+            EditorAssetLibrary.save_asset(materialInst.get_path_name())
+
+        EditorAssetLibrary.save_asset(mesh.get_path_name())
 
 
     def GetTexturesForMaterial(self, meshName: str, materialElement: StaticMaterial, textures: list[Texture2D]):
