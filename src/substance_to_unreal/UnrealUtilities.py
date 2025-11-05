@@ -126,7 +126,7 @@ class UnrealUtilities:
 
     def BuildBaseMaterial(self):
         if EditorAssetLibrary.does_asset_exist(self.baseMaterialPath):
-            EditorAssetLibrary.delete_asset(self.baseMaterialPath)
+            return EditorAssetLibrary.load_asset(self.baseMaterialPath)
 
         # make a material with name self.baaseMaterialName, at self.substanceRootDir, then using the MaterialFactoryNew() as the maker (which creates a brand new material)
         baseMat = AssetToolsHelpers.get_asset_tools().create_asset(
@@ -145,10 +145,14 @@ class UnrealUtilities:
         normal.set_editor_property("texture", EditorAssetLibrary.load_asset("/Engine/EngineMaterials/DefaultNormal"))
         MaterialEditingLibrary.connect_material_property(normal, "RGB", MaterialProperty.MP_NORMAL)
 
+        occRoughnessMetallic = MaterialEditingLibrary.create_material_expression(baseMat, TextureSample2D, -800, 800)   
+        occRoughnessMetallic.set_editor_property("parameter_name", self.occRoughnessMetalicName)
+        MaterialEditingLibrary.connect_material_property(occRoughnessMetallic, "R", MaterialProperty.MP_AMBIENT_OCCLUSION)
+        MaterialEditingLibrary.connect_material_property(occRoughnessMetallic, "G", MaterialProperty.MP_ROUGHNESS)
+        MaterialEditingLibrary.connect_material_property(occRoughnessMetallic, "B", MaterialProperty.MP_METALLIC)
+
         EditorAssetLibrary.save_asset(baseMat.get_path_name())
         return baseMat
-
-
 
 
 
