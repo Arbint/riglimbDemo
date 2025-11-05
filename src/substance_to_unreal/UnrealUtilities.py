@@ -25,7 +25,6 @@ class UnrealUtilities:
         self.occRoughnessMetalicName = "OcclusionRoughnessMetallic"
 
         self.baseMaterialName = "M_SubstanceBase"
-
         self.baseMaterialPath = self.substanceRootDir + self.baseMaterialName
 
 
@@ -136,6 +135,15 @@ class UnrealUtilities:
             asset_class=Material,
             factory=MaterialFactoryNew()
         )
+
+        baseColor = MaterialEditingLibrary.create_material_expression(baseMat, TextureSample2D, -800, 0)
+        baseColor.set_editor_property("parameter_name", self.baseColorName)
+        MaterialEditingLibrary.connect_material_property(baseColor, "RGB", MaterialProperty.MP_BASE_COLOR)
+
+        normal = MaterialEditingLibrary.create_material_expression(baseMat, TextureSample2D, -800, 400)
+        normal.set_editor_property("parameter_name", self.normalName)
+        normal.set_editor_property("texture", EditorAssetLibrary.load_asset("/Engine/EngineMaterials/DefaultNormal"))
+        MaterialEditingLibrary.connect_material_property(normal, "RGB", MaterialProperty.MP_NORMAL)
 
         EditorAssetLibrary.save_asset(baseMat.get_path_name())
         return baseMat
