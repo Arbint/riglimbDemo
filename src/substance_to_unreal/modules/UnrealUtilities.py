@@ -183,6 +183,5 @@ class UnrealUtilities:
         EditorAssetLibrary.save_asset(baseMat.get_path_name())
         return baseMat
 
+# UnrealUtilities().ImportFromDir("D:/JT/assets/Mat")
 
-
-UnrealUtilities().ImportFromDir("D:/JT/assets/TestAssets")
